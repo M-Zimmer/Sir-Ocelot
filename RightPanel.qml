@@ -14,8 +14,6 @@ Rectangle{
         onClicked: {
             parent.color = leftPanel.color == "#dddddd" ? "#dddddd" : parent.color;
             leftPanel.color = "#c6c6c6";
-            splitterA.color = leftPanel.color;
-            splitterB.color = rightPanel.color;
         }
     }
 }

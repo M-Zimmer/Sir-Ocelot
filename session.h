@@ -8,6 +8,7 @@ class Session: public QObject{
     public:
         Session();
     private:
+        QQmlEngine m_engine;
         AppWindow m_window;
         QSettings m_settings;
 };

@@ -8,16 +8,19 @@
 #include <QCursor>
 #include <QPoint>
 #include <QQuickWindow>
+#include <QAbstractNativeEventFilter>
+
+class NativeFilter: public QAbstractNativeEventFilter{
+
+public:
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *) override;
+};
 
 class AppWindow: public QObject{
     Q_OBJECT
     public:
-    AppWindow();
-    Q_INVOKABLE void handleDragEvent();
-    Q_INVOKABLE void handlePressedEvent();
-    Q_INVOKABLE void handleMaximizeEvent();
+    AppWindow(QQmlEngine&);
     private:
-        QQmlEngine m_engine;
         QQmlComponent m_mainComp;
         QQuickWindow* pWindow;
         QPoint m_lastCurPos;

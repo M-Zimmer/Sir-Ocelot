@@ -8,8 +8,7 @@ Window{
     visible: true
     width: Screen.width/1.5
     height: Screen.height/1.5
-    color: "gray"
-    flags: Qt.FramelessWindowHint | Qt.Window;
+    color: "transparent";
     TopBar{
         id: topBar;
     }
@@ -140,5 +139,4 @@ Window{
         }
     }
 }
-
 }

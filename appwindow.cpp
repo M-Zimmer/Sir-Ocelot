@@ -6,10 +6,14 @@
 #include "windowsx.h"
 
 
-AppWindow::AppWindow(QQmlEngine& engine):m_mainComp(&engine, QUrl(QStringLiteral("qrc:/MWindow.qml"))){
-    QObject::connect(&engine, &QQmlEngine::quit, QGuiApplication::instance(), &QGuiApplication::quit, Qt::QueuedConnection);
-    engine.rootContext()->setContextProperty("AppWindow", this);
+AppWindow::AppWindow(QQmlEngine& engine):m_mainComp(&engine, QUrl(QStringLiteral("qrc:/MWindow.qml"))),
+                                         m_leftFSModel(new ProxyFileSystemModel(this)),
+                                         m_rightFSModel(new ProxyFileSystemModel(this)){
+    QObject::connect(&engine, &QQmlEngine::quit, QApplication::instance(), &QApplication::quit, Qt::QueuedConnection);
     pWindow = qobject_cast<QQuickWindow*>(m_mainComp.create());
+    m_leftFSModel= qobject_cast<ProxyFileSystemModel*>(pWindow->findChild<QObject*>("leftFSModel"));
+    QFileSystemModel* fs = qobject_cast<QFileSystemModel*>(m_leftFSModel->sourceModel());
+    fs->setRootPath(QDir::currentPath());
     HWND hwnd = reinterpret_cast<HWND>(pWindow->winId());
     //change the window's style and shadows
     BOOL dwmTest = FALSE;

@@ -1,14 +1,14 @@
 #ifndef APPWINDOW_H
 #define APPWINDOW_H
 #include <QObject>
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
-#include <QCursor>
-#include <QPoint>
 #include <QQuickWindow>
+#include <QFileSystemModel>
 #include <QAbstractNativeEventFilter>
+#include "proxyfilesystemmodel.h"
 
 class NativeFilter: public QAbstractNativeEventFilter{
 
@@ -23,6 +23,7 @@ class AppWindow: public QObject{
     private:
         QQmlComponent m_mainComp;
         QQuickWindow* pWindow;
-        QPoint m_lastCurPos;
+        ProxyFileSystemModel* m_leftFSModel = 0;
+        ProxyFileSystemModel* m_rightFSModel = 0;
 };
 #endif // APPWINDOW_H

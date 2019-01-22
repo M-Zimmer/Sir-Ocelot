@@ -1,29 +1,30 @@
 #include "proxyfilesystemmodel.h"
 
-ProxyFileSystemModel::ProxyFileSystemModel(QObject* parent){
+ProxyFileSystemModel::ProxyFileSystemModel(QObject*){
     setSourceModel(new QFileSystemModel);
+    fs()->setReadOnly(false);
+    fs()->setFilter(QDir::AllDirs | QDir::AllEntries | QDir::System | QDir::Hidden);
 }
 
-QModelIndex ProxyFileSystemModel::index(int row, int column, const QModelIndex &parent) const {
+QModelIndex ProxyFileSystemModel::index(int row, int column, const QModelIndex &) const {
     QFileSystemModel* fs = qobject_cast<QFileSystemModel*>(sourceModel());
     QModelIndex proxyRootIndex = mapFromSource(fs->index(fs->rootPath()));
     return QIdentityProxyModel::index(row, column, proxyRootIndex);
 }
 
-QModelIndex ProxyFileSystemModel::parent(const QModelIndex &child) const {
+QModelIndex ProxyFileSystemModel::parent(const QModelIndex &) const {
     QFileSystemModel* fs = qobject_cast<QFileSystemModel*>(sourceModel());
     QModelIndex proxyRootIndex = mapFromSource(fs->index(fs->rootPath()));
-    qDebug() << child;
     return proxyRootIndex;
 }
 
-int ProxyFileSystemModel::columnCount(const QModelIndex &parent) const {
+int ProxyFileSystemModel::columnCount(const QModelIndex &) const {
     QFileSystemModel* fs = qobject_cast<QFileSystemModel*>(sourceModel());
     QModelIndex proxyRootIndex = mapFromSource(fs->index(fs->rootPath()));
     return QIdentityProxyModel::columnCount(proxyRootIndex);
 }
 
-int ProxyFileSystemModel::rowCount(const QModelIndex &parent) const {
+int ProxyFileSystemModel::rowCount(const QModelIndex &) const {
     QFileSystemModel* fs = qobject_cast<QFileSystemModel*>(sourceModel());
     QModelIndex proxyRootIndex = mapFromSource(fs->index(fs->rootPath()));
     return QIdentityProxyModel::rowCount(proxyRootIndex);

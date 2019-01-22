@@ -5,8 +5,9 @@
         <file>PanelBar.qml</file>
         <file>PanelContainer.qml</file>
         <file>LeftPanel.qml</file>
-        <file>SplitterBar.qml</file>
         <file>RightPanel.qml</file>
         <file>CmdBar.qml</file>
+        <file>ViewHeader.qml</file>
+        <file>ViewDelegate.qml</file>
     </qresource>
 </RCC>

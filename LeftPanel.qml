@@ -7,36 +7,31 @@ import FSModel 1.0
     //                       (3, "toolTip")     (0, "display")      (257, "filePath")
     //                       (1, "fileIcon")    (1, "decoration")   (4, "statusTip")    (5, "whatsThis"))
 
+// #ededed
+// #f4f4f4
+
+
 Rectangle{
-    color: "#dddddd";
+    color: "#f4f4f4";
     anchors.left: parent.left;
     anchors.right: splitterBar.left;
     anchors.top: parent.top;
     anchors.bottom: parent.bottom;
-    TableView{
-        id: view
-        property var columnWidthFactors: [0.25, 0.25, 0.25, 0.25]
-        columnWidthProvider: function (column) { return parent.width * columnWidthFactors[column] }
-        rowHeightProvider: function (row) { return 17; }
+    ListView{
+        id: leftView
+        objectName: "leftViewObj"
         anchors.fill: parent
         clip: true
-        //rowSpacing: 5
+        focus: true;
         model: FileSystemModel{
             objectName: "leftFSModel";
         }
-        delegate: Rectangle {
-            color: "transparent"
-            Text {
-                text: display;
+        header: ViewHeader{}
+        delegate: ViewDelegate{}
+        highlight:
+            Rectangle{
+              color: "#1C2977F3";
+              z: 1;
             }
-        }
-    }
-    //onWidthChanged: view.forceLayout()
-    MouseArea{
-        anchors.fill: parent;
-        onClicked: {
-            parent.color = rightPanel.color == "#dddddd" ? "#dddddd" : parent.color;
-            rightPanel.color = "#c6c6c6";
-        }
     }
 }

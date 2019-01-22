@@ -16,7 +16,8 @@ SOURCES += \
         main.cpp \
     appwindow.cpp \
     session.cpp \
-    proxyfilesystemmodel.cpp
+    proxyfilesystemmodel.cpp \
+    pixmapprovider.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,7 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     appwindow.h \
     session.h \
-    proxyfilesystemmodel.h
+    proxyfilesystemmodel.h \
+    pixmapprovider.h
 
 DISTFILES +=
 

@@ -9,6 +9,8 @@ Window{
     width: Screen.width/1.5
     height: Screen.height/1.5
     color: "transparent";
+    property int columnCount: 4
+    property var columnWidths: [200, 100, 125, 150]
     TopBar{
         id: topBar;
     }

@@ -12,6 +12,7 @@ class ProxyFileSystemModel : public QIdentityProxyModel{
         virtual QModelIndex parent(const QModelIndex &child) const override;
         virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
         virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+        QFileSystemModel* fs(){ return qobject_cast<QFileSystemModel*>(sourceModel()); }
 };
 
 #endif // PROXYFILESYSTEMMODEL_H

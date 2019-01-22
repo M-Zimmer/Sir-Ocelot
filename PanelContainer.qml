@@ -20,7 +20,7 @@ Rectangle{
         MouseArea{
             anchors.fill: parent;
             cursorShape: Qt.SplitHCursor;
-            drag.target: splitterBar;
+            drag.target: parent;
             drag.axis: Drag.XAxis;
             drag.smoothed: false;
             drag.threshold: 0;

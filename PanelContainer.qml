@@ -8,15 +8,22 @@ Rectangle{
     anchors.bottom: cmdBar.top;
     anchors.left: parent.left;
     anchors.right: parent.right;
-    LeftPanel{
+    Panel{
         id: leftPanel;
+        anchors.left: parent.left;
+        anchors.right: splitterBar.left;
+        anchors.top: parent.top;
+        anchors.bottom: parent.bottom;
+        property string viewObjName: "leftViewObj"
+        property string modelObjName: "leftFSModel"
     }
-    Item{
+    Rectangle{
         id: splitterBar;
         anchors.top: parent.top;
         anchors.bottom: parent.bottom;
         width: 20;
         x: parent.width/2 - width/2;
+        color: "#cecece";
         MouseArea{
             anchors.fill: parent;
             cursorShape: Qt.SplitHCursor;
@@ -27,22 +34,7 @@ Rectangle{
             drag.minimumX: 0;
             drag.maximumX: panelContainer.width - parent.width;
         }
-        Rectangle{
-            id: splLeftBorder;
-            anchors.left: parent.left;
-            anchors.top: parent.top;
-            anchors.bottom: parent.bottom;
-            width: 1
-            color: "#ff9e9e9e";
-        }
-        Rectangle{
-            id: splBar;
-            anchors.top: parent.top;
-            anchors.bottom: parent.bottom;
-            anchors.left: splLeftBorder.right;
-            anchors.right: splRightBorder.left;
-            color: "#cecece";
-            Button{
+        Button{
                 id: downArrow;
                 background:
                     Rectangle{
@@ -62,17 +54,14 @@ Rectangle{
                 anchors.right: parent.right;
                 text: "\u2186";
             }
-        }
-        Rectangle{
-            id: splRightBorder;
-            anchors.top: parent.top;
-            anchors.bottom: parent.bottom;
-            anchors.right: parent.right;
-            width: 1;
-            color: "#ff9e9e9e";
-        }
     }
-    RightPanel{
+    Panel{
         id: rightPanel;
+        anchors.left: splitterBar.right;
+        anchors.right: parent.right
+        anchors.top: parent.top;
+        anchors.bottom: parent.bottom;
+        property string viewObjName: "rightViewObj"
+        property string modelObjName: "rightFSModel"
     }
 }

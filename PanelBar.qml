@@ -7,7 +7,11 @@ Rectangle{
     anchors.left: parent.left
     anchors.right: parent.right
     height: 35
-    color: "#cccccc"
-    border.width: 1;
-    border.color: "#ff9e9e9e";
+    color: "#ff9e9e9e"
+    Rectangle{
+        anchors.fill: parent;
+        anchors.topMargin: 1;
+        anchors.bottomMargin: 1;
+        color: "#cccccc";
+    }
 }

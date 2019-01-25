@@ -7,7 +7,16 @@ Rectangle{
     anchors.left: parent.left
     anchors.right: parent.right
     height: 25
-    border.width: 1
-    border.color: "#ff9e9e9e"
-    color: "#ffffff"
+    color: "#ff9e9e9e"
+    Rectangle{
+        anchors.fill: parent;
+        anchors.topMargin: 1;
+        color: "#ffffff";
+        MouseArea{
+            anchors.fill: parent;
+            hoverEnabled: true;
+            onEntered: {parent.anchors.bottomMargin = 1;}
+            onExited: { parent.anchors.bottomMargin = 0;}
+        }
+    }
 }

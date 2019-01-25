@@ -14,39 +14,66 @@ Rectangle{
         font.letterSpacing: 0.5
         font.pointSize: 12;
     }
-    RoundButton{
+    Button{
         id: minimizeButton;
-        anchors.verticalCenter: parent.verticalCenter;
+        background: Rectangle{
+                color : "transparent"
+                MouseArea{
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+                    onPressed: parent.color = "#cccccc"
+                    onReleased: parent.color = "#c4c4c4"
+                    onEntered: parent.color = "#c4c4c4"
+                    onExited: parent.color = "transparent"
+                    onClicked: window.showMinimized();
+                }
+            }
         anchors.right: maximizeButton.left;
-        anchors.margins: 5
-        width: 22;
-        height: 22;
+        width: height * 1.5;
+        height: parent.height - 2;
         text: "\u268A";
-        onClicked: window.showMinimized();
     }
-    RoundButton{
+    Button{
         id: maximizeButton;
-        anchors.verticalCenter: parent.verticalCenter;
+        background: Rectangle{
+                color : "transparent"
+                MouseArea{
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+                    onPressed: parent.color = "#cccccc"
+                    onReleased: parent.color = "#c4c4c4"
+                    onEntered: parent.color = "#c4c4c4"
+                    onExited: parent.color = "transparent"
+                    onClicked: {
+                        if (window.visibility != Window.Maximized)
+                            window.showMaximized();
+                        else
+                            window.showNormal();
+                    }
+                }
+            }
         anchors.right: exitButton.left;
-        anchors.margins: 5
-        width: 22;
-        height: 22;
+        width: height * 1.5;
+        height: parent.height - 2;
         text: "\u2610";
-        onClicked: {
-         if (window.visibility != Window.Maximized)
-           window.showMaximized();
-         else
-           window.showNormal();
-        }
     }
-    RoundButton{
+    Button{
         id: exitButton;
-        anchors.verticalCenter: parent.verticalCenter;
+        background: Rectangle{
+                color : "transparent"
+                MouseArea{
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+                    onPressed: parent.color = "#cccccc"
+                    onReleased: parent.color = "#c4c4c4"
+                    onEntered: parent.color = "#c4c4c4"
+                    onExited: parent.color = "transparent"
+                    onClicked: Qt.quit();
+                }
+            }
         anchors.right: parent.right;
-        anchors.margins: 5
-        width: 22;
-        height: 22;
+        width: height * 1.5;
+        height: parent.height - 2;
         text: "\u26CC";
-        onClicked: Qt.quit();
     }
 }

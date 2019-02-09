@@ -7,7 +7,6 @@ Rectangle{
     color: "#9e9e9e";
     width: parent.width;
     height: 20;
-    property var modelObj: parent.parent.model;
     Rectangle{
         color: "#ededed";
         anchors.fill: parent;
@@ -28,7 +27,7 @@ Rectangle{
                     anchors.top: parent.top;
                     anchors.bottom: parent.bottom;
                     anchors.right: headerSplitter.left;
-                    text: modelObj.headerData(index);
+                    text: fsModel.headerData(index);
                     elide: Text.ElideRight;
                     verticalAlignment: Text.AlignVCenter;
                     leftPadding: 2
@@ -57,6 +56,9 @@ Rectangle{
                             id: headerSplitterMouseArea
                             anchors.fill: headerSplitterHitbox;
                             cursorShape: Qt.SplitHCursor;
+                            hoverEnabled: true;
+                            onEntered: topMouseArea.cursorShape = cursorShape;
+                            onExited: topMouseArea.cursorShape = MouseArea.cursorShape;
                             drag.target: headerSplitter;
                             drag.axis: Drag.XAxis;
                             drag.smoothed: false;

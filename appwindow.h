@@ -1,16 +1,14 @@
 #ifndef APPWINDOW_H
 #define APPWINDOW_H
-#include <QObject>
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
 #include <QQuickWindow>
-#include <QFileSystemModel>
-#include <QFileSystemWatcher>
 #include <QAbstractNativeEventFilter>
 #include "proxyfilesystemmodel.h"
 #include "pixmapprovider.h"
+#include "atlbase.h"
 
 class NativeFilter: public QAbstractNativeEventFilter{
 
@@ -25,13 +23,16 @@ class AppWindow: public QObject{
     // make an enum in the future to contain values for the column types of the views' headers
     AppWindow(QQmlEngine&);
     Q_INVOKABLE QUrl requestImageSource(QVariant);
-    Q_INVOKABLE int columnCount(){return m_columnCount;}
-    Q_INVOKABLE int columnWidth(int column){ return m_columnWidths[column];}
     Q_INVOKABLE void updateOtherHeader(QString viewObjName);
+    Q_INVOKABLE QString getRootPathOfModel(QString name);
     Q_INVOKABLE QString storageInfo(QString path);
+    Q_INVOKABLE void openContextMenu(QString);
+    Q_INVOKABLE bool isDir(QString);
+    static HWND hwnd() {return m_hwnd;}
     private:
         QQmlComponent m_mainComp;
         QQuickWindow* pWindow;
+        static HWND m_hwnd;
         ProxyFileSystemModel* m_leftFSModel = 0;
         ProxyFileSystemModel* m_rightFSModel = 0;
         const QString m_imageProvId = "PixmapProvider";
@@ -39,7 +40,10 @@ class AppWindow: public QObject{
         const QString m_rightFSModelName = "rightFSModel";
         const QString m_leftViewName = "leftViewObj";
         const QString m_rightViewName = "rightViewObj";
-        int m_columnCount = 4;
-        QVector<int> m_columnWidths;
+        QThread* m_bgThread = 0;
+        struct _parsedITEMIDLIST{
+            CComHeapPtr<ITEMIDLIST> id;
+            bool m_contextMenuParseStatus = false;
+        } m_iidlist;
 };
 #endif // APPWINDOW_H

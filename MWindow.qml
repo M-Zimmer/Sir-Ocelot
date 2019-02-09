@@ -87,7 +87,7 @@ Window{
         anchors.fill: parent
         ToolButton {
             Layout.fillWidth: true
-            text: qsTr("View (F3)")
+            text: qsTr("View/Open (F3)")
             Rectangle{
                 anchors.fill: parent
                 color: "transparent"
@@ -124,6 +124,7 @@ Window{
         ToolButton {
             Layout.fillWidth: true
             text: qsTr("Delete (F8)")
+            action: deleteAction;
             Rectangle{
                 anchors.fill: parent
                 color: "transparent"
@@ -133,7 +134,7 @@ Window{
         ToolButton {
             Layout.fillWidth: true
             text: qsTr("Exit (Alt+F4)")
-            onClicked: Qt.quit()
+            action: exitAction;
             Rectangle{
                 anchors.fill: parent
                 color: "transparent"
@@ -141,4 +142,58 @@ Window{
         }
     }
 }
+    Action{
+        id: viewOpenAction;
+        text: "&View/Open";
+        shortcut: "F3"
+    }
+    Action{
+        id: copyAction;
+        text: "&Copy";
+        shortcut: "F5";
+    }
+    Action{
+        shortcut: "Ctrl+C";
+        onTriggered: copyAction.trigger();
+    }
+    Action{
+        id: moveAction;
+        text: "&Copy";
+        shortcut: "F6";
+    }
+    Action{
+        id: pasteAction;
+        shortcut: "Ctrl+V";
+    }
+    Action{
+        id: renameAction;
+        text: "&Rename";
+        shortcut: "F2"
+    }
+    Action{
+        id: deleteAction;
+        text: "&Delete"
+        shortcut: "Delete"
+    }
+    Action{
+        shortcut: "F8"
+        onTriggered: deleteAction.trigger();
+    }
+    Action{
+        id: mkdirAction; // STILL NOT IMPLEMENTED
+        shortcut: "F7"
+    }
+    Action{
+        id: selectAllAction;
+        shortcut: "Ctrl+A";
+    }
+    Action{
+        id: deselectAllAction;
+        shortcut: "Shift+Ctrl+A";
+    }
+    Action{
+        id: exitAction;
+        shortcut: "Alt+F4"
+        onTriggered: Qt.quit();
+    }
 }

@@ -68,7 +68,7 @@ Rectangle{
                     onReleased: parent.color = "#c4c4c4"
                     onEntered: parent.color = "#c4c4c4"
                     onExited: parent.color = "transparent"
-                    onClicked: Qt.quit();
+                    onClicked: exitAction.trigger();
                 }
             }
         anchors.right: parent.right;

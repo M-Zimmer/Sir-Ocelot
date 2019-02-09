@@ -1,5 +1,5 @@
 QT += quick widgets
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -44,3 +44,4 @@ win32:LIBS += -luser32
 win32:LIBS += -lpsapi
 win32:LIBS += -lkernel32
 win32:LIBS += -ldwmapi
+win32:LIBS += -lshell32

@@ -1,7 +1,4 @@
 #include <QApplication>
-#include <QQmlApplicationEngine>
-#include <QQmlComponent>
-#include <QDebug>
 #include "session.h"
 
 int main(int argc, char *argv[])

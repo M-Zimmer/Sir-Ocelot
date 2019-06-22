@@ -5,11 +5,21 @@ import QtQuick.Controls 2.12
 Rectangle{
     anchors.left: parent.left
     anchors.right: parent.right
-    height: 30
+    height: 32
     color: "#9e9e9e"
+    Image{
+        id: icon;
+        source: AppWindow.urlFromPath("./icon.ico");
+        sourceSize.width: 32;
+        sourceSize.height: 32;
+        anchors.left: parent.left;
+    }
     Label{
+        id: caption
         text: "Sir Ocelot File Manager";
-        anchors.centerIn: parent;
+        anchors.left: icon.left;
+        anchors.leftMargin: 40;
+        anchors.verticalCenter: parent.verticalCenter;
         font.family: "Century Gothic"
         font.letterSpacing: 0.5
         font.pointSize: 12;

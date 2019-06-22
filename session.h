@@ -7,6 +7,10 @@ class Session: public QObject{
     Q_OBJECT
     public:
         Session();
+        void saveToFavorites(QString name, QVariant tabUrls);
+        void saveToRecentlyClosed(QString name, QVariant tabUrls);
+        QVariant favoritePanels();
+        QVariant recentlyClosedPanels();
     private:
         QQmlEngine m_engine;
         AppWindow m_window;

@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import QtQml.Models 2.12
 
 //"#1C2977F3";
 Rectangle {
@@ -10,15 +9,15 @@ Rectangle {
     width: parent.width
     height: 19;
     property alias edit: nameEdit;
-    property string propFilePath: filePath;
+    property var initPressedPos: ({x: null, y: null});
     Row{
         anchors.fill: parent;
         Image{
             id: icon
             asynchronous: true;
-            source: AppWindow.requestImageSource(decoration);
+            source: AppWindow.requestImageSource(filePath);
             sourceSize.height: 16
-            sourceSize.width: 16
+            sourceSize.width: 16;
             anchors.verticalCenter: parent.verticalCenter
         }
         Repeater{
@@ -32,11 +31,19 @@ Rectangle {
                 }
                 height: parent.height;
                 elide: Text.ElideRight;
-                text: fsModel.fileData(filePath, index);
+                text: switch(index){
+                      case 0: return fileName;
+                      case 1: return AppWindow.fileType(filePath);
+                      case 2: return fileSize;
+                      case 3: return fileModified;
+                      }
                 verticalAlignment: Text.AlignVCenter;
                 leftPadding: 2;
             }
 
+        }
+        Component.onCompleted: {
+            fsModel.watcher.add(filePath);
         }
     }
     Rectangle{
@@ -55,13 +62,49 @@ Rectangle {
         }
     ]
     state: fsView.selectedIndexes[index] ? "selected" : "deselected";
+    Drag.supportedActions: Qt.MoveAction
+    Drag.mimeData: {
+            "text/uri-list": fileURL
+    }
+    Drag.onDragFinished: {
+        initPressedPos.x = null;
+        initPressedPos.y = null;
+    }
     MouseArea{
+        id: mArea;
         anchors.fill: parent;
         acceptedButtons: Qt.LeftButton | Qt.RightButton;
         hoverEnabled: true;
         onEntered: parent.color = Qt.tint(parent.color, "#1C2977F3")
         onExited: parent.color = index % 2 == 0 ? "#ededed" : "#f4f4f4"
-        onClicked: {
+        onPositionChanged:
+            if (pressedButtons & Qt.LeftButton){
+              if (parent.initPressedPos.x === null && parent.initPressedPos.y === null){
+                parent.initPressedPos.x = mouse.x;
+                parent.initPressedPos.y = mouse.y;
+              }
+              else if (!parent.Drag.active &&
+                        Math.sqrt(Math.pow(mouse.x - parent.initPressedPos.x, 2) +
+                                    Math.pow(mouse.y - parent.initPressedPos.y, 2)) >= 7){
+                    parent.Drag.active = true;
+                    parent.grabToImage(function(result) {
+                    parent.Drag.imageSource = result.url;
+                    parent.Drag.mimeData = {
+                        "text/uri-list": fsModel.getSelectedRole("fileURL").reduce(function (acc, val){
+                                                                        return acc + val + "\r\n";
+                                                                    }, "")
+                    };
+                    dArea.enabled = false;
+                    parent.Drag.startDrag();
+                });
+              }
+            }
+        onReleased: {
+            initPressedPos.x = null;
+            initPressedPos.y = null;
+            dArea.enabled = true;
+        }
+        onPressed: {
                     topRect.ListView.view.currentIndex = index;
                     if (mouse.modifiers & Qt.ControlModifier){
                        parent.state = parent.state === "selected" ? "deselected" : "selected";
@@ -71,7 +114,8 @@ Rectangle {
                        fsView.requestDeselectAll();
                        fsView.requestRangeSelection(index, fsView.shiftAnchorIndex);
                     }else {
-                      fsView.requestDeselectAll();
+                      if (mouse.button === Qt.LeftButton)
+                        fsView.requestDeselectAll();
                       parent.state = "selected";
                       fsView.selectedIndexes[index] = true;
 
@@ -82,8 +126,9 @@ Rectangle {
                       fsView.shiftAnchorIndex = index;
                     }
 
-                    if (mouse.button === Qt.RightButton)
-                        AppWindow.openContextMenu(filePath);
+                    if (mouse.button === Qt.RightButton){
+                        AppWindow.openContextMenu(fsModel.getSelectedRole("filePath"));
+                    }
         }
         onDoubleClicked: viewOpenAction.trigger();
     }
@@ -99,7 +144,7 @@ Rectangle {
           //  radius: 2;
         }
         onAccepted: {
-            fsModel.fileRename(fsModel.index(fsView.currentIndex,0), text);
+            AppWindow.fileRename(filePath, text);
             nameEdit.focus = false;
         }
         Component.onCompleted: {
@@ -111,6 +156,8 @@ Rectangle {
         target: fsView
         onRequestDeselectAll: if (topRect.state === "selected"){ topRect.state = "deselected";}
         onRequestSelectAll: if (topRect.state !== "selected"){ topRect.state = "selected";}
+        onRequestInvertSelection: if (topRect.state === "selected") topRect.state = "deselected";
+                                  else if (topRect.state === "deselected") topRect.state = "selected";
         onRequestRangeSelection: {
             if (left > right){
                 var t = left;

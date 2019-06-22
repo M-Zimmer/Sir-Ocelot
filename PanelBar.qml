@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import StdPaths 1.0
 
 Rectangle{
     anchors.top: menuBar.bottom
@@ -13,5 +15,43 @@ Rectangle{
         anchors.topMargin: 1;
         anchors.bottomMargin: 1;
         color: "#cccccc";
+        Row{
+            anchors.fill: parent;
+            spacing: 5;
+            topPadding: 2;
+            PanelBarButton{
+                id: selectAllButton;
+                action: selectAllAction;
+            }
+            PanelBarButton{
+                id: deselectAllButton;
+                action: deselectAllAction;
+            }
+            PanelBarButton{
+                id: invertSelectionButton;
+                action: invertSelectionAction;
+            }
+            PanelBarButton{
+                id: terminalButton;
+                action: runTerminalAction;
+            }
+            PanelBarButton{
+                id: desktopButton;
+                action: setUrlAction;
+                text: "Desktop";
+                property url pathUrl: AppWindow.getStandardPathUrl(QStandardPaths.DesktopLocation);
+            }
+            PanelBarButton{
+                id: documentsButton;
+                action: setUrlAction;
+                text: "Documents";
+                property url pathUrl: AppWindow.getStandardPathUrl(QStandardPaths.DocumentsLocation);
+            }
+            PanelBarButton{
+                id: rootButton;
+                action: setUrlAction;
+                text: "Root";
+            }
+        }
     }
 }

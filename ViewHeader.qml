@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+import Qt.labs.folderlistmodel 2.12
 
 Rectangle{
     id: topRect;
@@ -8,6 +9,7 @@ Rectangle{
     width: parent.width;
     height: 20;
     Rectangle{
+        id: innerRect;
         color: "#ededed";
         anchors.fill: parent;
         //anchors.bottomMargin: 1
@@ -20,14 +22,21 @@ Rectangle{
                 width: 1 //placeholder value, didn't assign to window.columnWidths[index] to prevent binding loops
                 height: parent.height;
                 parent: index != 0 ? repeater.itemAt(index - 1).children[1] : parent;
-                Component.onCompleted: width = window.columnWidths[index]
+                Component.onCompleted: width = window.columnWidths[index];
                 Text{
                     id: headerColumnText;
+                    property bool sortIndicator: false;
+                    property string columnText: switch(index){
+                                                case 0: return "Name";
+                                                case 1: return "Type";
+                                                case 2: return "Size";
+                                                case 3: return "Last modified";
+                                                }
                     anchors.left: parent.left;
                     anchors.top: parent.top;
                     anchors.bottom: parent.bottom;
                     anchors.right: headerSplitter.left;
-                    text: fsModel.headerData(index);
+                    text: columnText;
                     elide: Text.ElideRight;
                     verticalAlignment: Text.AlignVCenter;
                     leftPadding: 2
@@ -37,7 +46,41 @@ Rectangle{
                             AppWindow.updateOtherHeader(topRect.parent.parent.objectName);
                         }
                     }
-
+                    Rectangle{
+                        id: hoverRect;
+                        color: Qt.tint("#AAededed", "#1C2977F3");
+                        anchors.fill: parent;
+                        visible: false;
+                        z: parent.z - 1;
+                    }
+                    MouseArea{
+                        anchors.fill: parent;
+                        hoverEnabled: true;
+                        onEntered: hoverRect.visible = true;
+                        onExited: hoverRect.visible = false;
+                        onClicked: {
+                            if (parent.text.includes("Name")) sortByNameAction.trigger();
+                            else if (parent.text.includes("Type")) sortByNameAction.trigger();
+                            else if (parent.text.includes("Size")) sortByNameAction.trigger();
+                            else if (parent.text.includes("Last modified")) sortByNameAction.trigger();
+                        }
+                    }
+                    Connections{
+                        target: fsView;
+                        onUpdateHeaderSortIndicator: {
+                            switch(index){
+                                case 0: headerColumnText.sortIndicator = (fsModel.sortField === FolderListModel.Name); break;
+                                case 1: headerColumnText.sortIndicator = (fsModel.sortField === FolderListModel.Type); break;
+                                case 2: headerColumnText.sortIndicator = (fsModel.sortField === FolderListModel.Size); break;
+                                case 3: headerColumnText.sortIndicator = (fsModel.sortField === FolderListModel.Time); break;
+                            }
+                            var str = headerColumnText.columnText;
+                            if (headerColumnText.sortIndicator)
+                                if (fsModel.sortReversed) str = str.concat(' \u22C1');
+                                else str = str.concat(' \u22C0');
+                            headerColumnText.text = str;
+                        }
+                    }
                 }
                 Rectangle{
                     id: headerSplitter;
@@ -68,6 +111,7 @@ Rectangle{
                     }
                 }
             }
+            Component.onCompleted: fsView.updateHeaderSortIndicator();
         }
     }
 }

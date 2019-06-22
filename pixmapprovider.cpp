@@ -1,5 +1,6 @@
 #include "pixmapprovider.h"
 #include <QIcon>
+#include <QDebug>
 
 PixmapProvider::PixmapProvider():QQuickImageProvider(QQuickImageProvider::Pixmap,
                                  QQuickImageProvider::ForceAsynchronousImageLoading)

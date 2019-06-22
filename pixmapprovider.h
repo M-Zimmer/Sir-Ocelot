@@ -4,7 +4,7 @@
 
 class PixmapProvider : public QQuickImageProvider
 {
-    typedef QHash <qintptr, QString> IdHash;
+    typedef QHash <qint64, QString> IdHash;
     typedef QHash <QString, QPixmap> PxHash;
     public:
         PixmapProvider();

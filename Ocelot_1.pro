@@ -1,11 +1,15 @@
 QT += quick widgets
 CONFIG += c++17
+VERSION = 0.3.0
+
+TARGET = SirOcelot
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+RC_ICONS = icon.ico
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -16,8 +20,9 @@ SOURCES += \
         main.cpp \
     appwindow.cpp \
     session.cpp \
-    proxyfilesystemmodel.cpp \
-    pixmapprovider.cpp
+    pixmapprovider.cpp \
+    quickfilewatcher.cpp \
+    newfilemaker.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,13 +40,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     appwindow.h \
     session.h \
-    proxyfilesystemmodel.h \
-    pixmapprovider.h
+    pixmapprovider.h \
+    quickfilewatcher.h \
+    newfilemaker.h
 
 DISTFILES +=
 
-win32:LIBS += -luser32
-win32:LIBS += -lpsapi
-win32:LIBS += -lkernel32
 win32:LIBS += -ldwmapi
-win32:LIBS += -lshell32

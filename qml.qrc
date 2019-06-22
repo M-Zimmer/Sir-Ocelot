@@ -7,6 +7,24 @@
         <file>CmdBar.qml</file>
         <file>ViewHeader.qml</file>
         <file>ViewDelegate.qml</file>
+        <file>PanelView.qml</file>
         <file>Panel.qml</file>
+        <file>PanelListPopup.qml</file>
+        <file>PathHistoryPopup.qml</file>
+        <file>NewFilePopup.qml</file>
+        <file>NewPanelPopup.qml</file>
+        <file>NewPanelDelegate.qml</file>
+        <file>PairedPanelsListPopup.qml</file>
+        <file>PairedPanelsListDelegate.qml</file>
+        <file>SearchPopup.qml</file>
+        <file>SearchResultDelegate.qml</file>
+        <file>MainMenuBar.qml</file>
+        <file>AboutPopup.qml</file>
+        <file>NewShortcutPopup.qml</file>
+        <file>PanelBarButton.qml</file>
+        <file>MWindowToolBar.qml</file>
+        <file>PanelStack.qml</file>
+        <file>NewPanelViewTemplate.qml</file>
+        <file>PanelViewList.qml</file>
     </qresource>
 </RCC>

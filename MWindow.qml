@@ -6,64 +6,28 @@ import QtQuick.Layouts 1.12
 Window{
     id: window
     visible: true
-    width: Screen.width/1.5
-    height: Screen.height/1.5
+    width: initialSize.width;
+    height: initialSize.height;
+
+    Component.onCompleted: {
+        borderlessDeltaSize.width = width - initialSize.width;
+        borderlessDeltaSize.height = height - initialSize.height;
+        width = initialSize.width;
+        height = initialSize.height;
+    }
     color: "transparent";
+    property size initialSize: Qt.size(Screen.width/1.5, Screen.height/1.5);
+    property size borderlessDeltaSize;
     property int columnCount: 4
     property var columnWidths: [200, 100, 125, 150]
+    AboutPopup{
+        id: aboutPopup;
+    }
     TopBar{
         id: topBar;
     }
-    MenuBar{
+    MainMenuBar{
         id: menuBar
-        anchors.top: topBar.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 25
-        spacing: 1
-        background: Rectangle{
-                color: "#cccccc"
-            }
-        font.family: "Arial"
-        font.weight: Font.Thin
-        MenuBarItem{
-            id: fileMenu
-            height: 25
-            anchors.left: parent.left
-            menu:
-                Menu{
-                    title: qsTr("File")
-                }
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        MenuBarItem{
-            height: 25
-            anchors.left: fileMenu.right
-            menu:
-                Menu{
-                    title: qsTr("Edit")
-                }
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        MenuBarItem{
-            height: 25
-            anchors.right: parent.right
-            menu:
-                Menu{
-                    title: qsTr("About")
-                }
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-
     }
     PanelBar{
         id: panelBar;
@@ -71,85 +35,25 @@ Window{
     PanelContainer{
         id: panelContainer;
     }
-    CmdBar{
+    /*CmdBar{
         id: cmdBar;
+    }*/
+    MWindowToolBar{
+        id: toolBar;
     }
-    ToolBar {
-        id: toolBar
-        background: Rectangle{
-            color: "#dddddd"
-        }
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: implicitHeight + 5
-    RowLayout {
-        anchors.fill: parent
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("View/Open (F3)")
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        ToolSeparator{}
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("Copy (F5)")
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        ToolSeparator{}
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("Move (F6)")
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        ToolSeparator{}
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("Mkdir (F7)")
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        ToolSeparator{}
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("Delete (F8)")
-            action: deleteAction;
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
-        ToolSeparator{}
-        ToolButton {
-            Layout.fillWidth: true
-            text: qsTr("Exit (Alt+F4)")
-            action: exitAction;
-            Rectangle{
-                anchors.fill: parent
-                color: "transparent"
-            }
-        }
+    Action{
+        id: propertiesAction;
+        text: "Properties"
+        shortcut: "Alt+Return"
     }
-}
     Action{
         id: viewOpenAction;
-        text: "&View/Open";
+        text: qsTr("View/Open (F3)")
         shortcut: "F3"
     }
     Action{
         id: copyAction;
-        text: "&Copy";
+        text: qsTr("Copy (F5)")
         shortcut: "F5";
     }
     Action{
@@ -158,7 +62,7 @@ Window{
     }
     Action{
         id: moveAction;
-        text: "&Copy";
+        text: qsTr("Move (F6)")
         shortcut: "F6";
     }
     Action{
@@ -172,7 +76,7 @@ Window{
     }
     Action{
         id: deleteAction;
-        text: "&Delete"
+        text: qsTr("Delete (F8)");
         shortcut: "Delete"
     }
     Action{
@@ -180,20 +84,154 @@ Window{
         onTriggered: deleteAction.trigger();
     }
     Action{
-        id: mkdirAction; // STILL NOT IMPLEMENTED
+        id: newDirectoryAction;
+        text: "Create Directory"
+    }
+    Action{
+        id: newShortcutAction
+        text: "Create Shortcut"
+    }
+    Action{
+        id: mkdirAction;
+        text: qsTr("Make file/folder\n (F7)")
         shortcut: "F7"
     }
     Action{
+        id: openSearchPopup;
+        text: "Search...";
+        shortcut: "Ctrl+F";
+    }
+    Action{
+        id: swapPanelsAction;
+        text: "Swap Panels";
+    }
+    Action{
+        id: swapTabsAction;
+        text: "Swap Tabs";
+    }
+    Action{
+        id: targetPanelsAction;
+        text: "Target = Source (Panels)";
+    }
+    Action{
+        id: targetTabsAction;
+        text: "Target = Source (Tabs)";
+    }
+    Action{
+        id: runTerminalAction;
+        text: "Run Terminal"
+    }
+    Action{
+        id: newPanelAction;
+        text: "New Panel";
+    }
+    Action{
+        id: closePanelAction;
+        text: "Close Panel";
+    }
+    Action{
+        id: setFavoriteAction;
+        text: "Set Panel As Favorite";
+    }
+    Action{
+        id: nextPanelAction;
+        text: "Next Panel";
+    }
+    Action{
+        id: previousPanelAction;
+        text: "Previous Panel";
+    }
+    Action{
+        id: minimizePanelAction;
+        text: "Minimize Panel";
+    }
+    Action{
+        id: minimizeBothPanelsAction;
+        text: "Minimize Both Panels";
+    }
+    Action{
+        id: showSingleListAction;
+        text: "Show Panel List";
+    }
+    Action{
+        id: showPairedListAction;
+        text: "Show Paired Panels List";
+    }
+    Action{
+        id: newTabAction;
+        text: "New Tab";
+    }
+    Action{
+        id: closeTabAction;
+        text: "Close Tab";
+    }
+    Action{
+        id: nextTabAction;
+        text: "Next Tab";
+    }
+    Action{
+        id: previousTabAction;
+        text: "Previous Tab";
+    }
+    Action{
+        id: forwardAction;
+        text: "Forward";
+    }
+    Action{
+        id: backAction;
+        text: "Back";
+    }
+    Action{
+        id: upAction;
+        text: "Up";
+    }
+    Action{
+        id: sortByNameAction;
+        text: "Sort By Name";
+    }
+    Action{
+        id: sortByExtAction;
+        text: "Sort By Extension";
+    }
+    Action{
+        id: sortBySizeAction
+        text: "Sort By Size";
+    }
+    Action{
+        id: sortByTimeAction;
+        text: "Sort By Last Modified";
+    }
+    Action{
+        id: aboutAction;
+        text: qsTr("About");
+        onTriggered: {
+            aboutPopup.show();
+            aboutPopup.height -= borderlessDeltaSize.height;
+            aboutPopup.width -= borderlessDeltaSize.width;
+        }
+    }
+    Action{
         id: selectAllAction;
+        text: "Select All";
         shortcut: "Ctrl+A";
     }
     Action{
         id: deselectAllAction;
+        text: "Deselect All";
         shortcut: "Shift+Ctrl+A";
+    }
+    Action{
+        id: invertSelectionAction;
+        text: "Invert Selection";
+        shortcut: "Ctrl+I";
+    }
+    Action{
+        id: setUrlAction;
     }
     Action{
         id: exitAction;
         shortcut: "Alt+F4"
+        text: qsTr("Exit (Alt+F4)")
         onTriggered: Qt.quit();
     }
 }

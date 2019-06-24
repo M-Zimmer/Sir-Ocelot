@@ -1,3 +1,21 @@
+// Copyright 2018-2019 Max Mazur
+/*
+    This file is part of Sir Ocelot File Manager.
+
+    Sir Ocelot File Manager is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Sir Ocelot File Manager is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with Sir Ocelot File Manager.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
@@ -77,7 +95,7 @@ Early Alpha Version (0.3.0)\n
 Qt 5.12.3\n\n
 Created by Max \"ZiMMeR_7\" Mazur\n\n
 Licensed under the LGPLv3 license, the license file is included with the application.\n
-2018-2019"
+© Max Mazur 2018-2019"
         }
     }
 }

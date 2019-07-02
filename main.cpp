@@ -21,6 +21,7 @@
 #include "quickfilewatcher.h"
 #include <QProcess>
 #include <QStandardPaths>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -30,10 +31,11 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.3.0");
     app.setOrganizationName("ZiMMeR_7");
     QGuiApplication::instance()->installNativeEventFilter(new NativeFilter());
+    QObject::connect(&app, &(QGuiApplication::aboutToQuit), [&] () { Session::disposeOfInstance(); });
     qmlRegisterUncreatableType<QStandardPaths>("StdPaths", 1, 0, "QStandardPaths", "QStandardPaths cannot be instantiated.");
     qmlRegisterType<QuickFileWatcher>("FWatcher", 1, 0, "QuickFileWatcher");
     app.setApplicationDisplayName("Sir Ocelot File Manager");
 
-    Session session;
+    Session* session = Session::instance();
     return app.exec();
 }

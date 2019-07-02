@@ -18,7 +18,23 @@
 
 #include "session.h"
 
+Session* Session::_instance = nullptr;
+
 Session::Session():m_window(m_engine, this),m_settings("./settings.ini",QSettings::IniFormat, this){
+}
+
+Session* Session::instance(){
+    if (_instance == nullptr){
+        _instance = new Session();
+    }
+    return Session::_instance;
+}
+
+void Session::disposeOfInstance(){
+    if (_instance != nullptr){
+        delete _instance;
+        _instance = nullptr;
+    }
 }
 
 void Session::saveToFavorites(QString name, QVariant tabUrls){

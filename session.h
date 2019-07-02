@@ -24,12 +24,17 @@
 class Session: public QObject{
     Q_OBJECT
     public:
-        Session();
+        //Session();
+        static Session* instance();
+        static void disposeOfInstance();
         void saveToFavorites(QString name, QVariant tabUrls);
         void saveToRecentlyClosed(QString name, QVariant tabUrls);
         QVariant favoritePanels();
         QVariant recentlyClosedPanels();
+    protected:
+        Session();
     private:
+        static Session* _instance;
         QQmlEngine m_engine;
         AppWindow m_window;
         QSettings m_settings;

@@ -1,4 +1,7 @@
 # Sir Ocelot (Early Alpha)
+
+![SOFM Main Window](https://repository-images.githubusercontent.com/163692156/a0ea9f80-9dd0-11e9-93dd-7d76ca5e608c)
+
 Sir Ocelot File Manager (SOFM) is a file manager with the capabilities to use and store several panels (that is, more than the standard 2) at once, allowing the user to quickly switch between multiple locations and logical groups of tabs. And also it has a pretty UI, I think.
 
 Features:
